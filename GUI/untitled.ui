@@ -1,0 +1,1018 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DatCar</class>
+ <widget class="QMainWindow" name="DatCar">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1130</width>
+    <height>806</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="font">
+   <font>
+    <family>Segoe UI</family>
+    <pointsize>12</pointsize>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>DatCar</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color:rgb(111, 111, 111)</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout_3">
+    <item>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="DatCar_label">
+        <property name="font">
+         <font>
+          <family>Eras Bold ITC</family>
+          <pointsize>48</pointsize>
+         </font>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string>DatCar</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="database_btn">
+        <property name="maximumSize">
+         <size>
+          <width>1077</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
+        <property name="accessibleDescription">
+         <string/>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background:rgb(204, 88, 90)</string>
+        </property>
+        <property name="text">
+         <string>Przeglądaj bazę samochodów</string>
+        </property>
+        <property name="autoDefault">
+         <bool>false</bool>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QTabWidget" name="tabWidget">
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
+        <property name="currentIndex">
+         <number>2</number>
+        </property>
+        <property name="tabBarAutoHide">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="YourDreamCar">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <attribute name="title">
+          <string>Rekomendacja z uwzględnieniem kryteriów</string>
+         </attribute>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QFrame" name="frame">
+            <property name="frameShape">
+             <enum>QFrame::Box</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <property name="lineWidth">
+             <number>2</number>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_4">
+             <item>
+              <widget class="QLabel" name="label">
+               <property name="font">
+                <font>
+                 <pointsize>12</pointsize>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>Kryteria</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QFrame" name="frame_5">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>300</height>
+                </size>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_2">
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_2">
+                  <item>
+                   <widget class="QLabel" name="label_2">
+                    <property name="font">
+                     <font>
+                      <pointsize>10</pointsize>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string>Marka</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_4">
+                    <property name="font">
+                     <font>
+                      <pointsize>10</pointsize>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string>Rodzaj paliwa</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_5">
+                    <property name="font">
+                     <font>
+                      <pointsize>10</pointsize>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string>Rodzaj skrzyni biegów</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_7">
+                    <property name="font">
+                     <font>
+                      <pointsize>10</pointsize>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string>Rodzaj nadwozia</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_6">
+                    <property name="font">
+                     <font>
+                      <pointsize>10</pointsize>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string>Stan pojazdu</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_3">
+                    <property name="font">
+                     <font>
+                      <pointsize>10</pointsize>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string>Kolor</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout">
+                  <item>
+                   <widget class="QComboBox" name="comboBox_marka">
+                    <property name="styleSheet">
+                     <string notr="true">background-color: rgb(255, 255, 255);</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="comboBox_paliwo">
+                    <property name="styleSheet">
+                     <string notr="true">background-color: rgb(255, 255, 255);</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="comboBox_skrzynia">
+                    <property name="styleSheet">
+                     <string notr="true">background-color: rgb(255, 255, 255);</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="comboBox_nadwozie">
+                    <property name="styleSheet">
+                     <string notr="true">background-color: rgb(255, 255, 255);</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="comboBox_stan">
+                    <property name="styleSheet">
+                     <string notr="true">background-color: rgb(255, 255, 255);</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="comboBox_kolor">
+                    <property name="styleSheet">
+                     <string notr="true">background-color: rgb(255, 255, 255);</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QFrame" name="frame_3">
+               <property name="frameShape">
+                <enum>QFrame::Box</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Plain</enum>
+               </property>
+               <property name="lineWidth">
+                <number>1</number>
+               </property>
+               <widget class="QLabel" name="label_8">
+                <property name="geometry">
+                 <rect>
+                  <x>20</x>
+                  <y>10</y>
+                  <width>47</width>
+                  <height>13</height>
+                 </rect>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Cena</string>
+                </property>
+               </widget>
+               <widget class="QPlainTextEdit" name="Cena_OD">
+                <property name="geometry">
+                 <rect>
+                  <x>40</x>
+                  <y>30</y>
+                  <width>101</width>
+                  <height>31</height>
+                 </rect>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(255, 255, 255);</string>
+                </property>
+               </widget>
+               <widget class="QPlainTextEdit" name="Cena_DO">
+                <property name="geometry">
+                 <rect>
+                  <x>210</x>
+                  <y>30</y>
+                  <width>101</width>
+                  <height>31</height>
+                 </rect>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(255, 255, 255);</string>
+                </property>
+               </widget>
+               <widget class="QLabel" name="label_9">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>40</y>
+                  <width>21</width>
+                  <height>20</height>
+                 </rect>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Od:</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+               <widget class="QLabel" name="label_10">
+                <property name="geometry">
+                 <rect>
+                  <x>180</x>
+                  <y>40</y>
+                  <width>21</width>
+                  <height>20</height>
+                 </rect>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Do:</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </widget>
+             </item>
+             <item>
+              <widget class="QFrame" name="frame_4">
+               <property name="frameShape">
+                <enum>QFrame::Box</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Plain</enum>
+               </property>
+               <property name="lineWidth">
+                <number>1</number>
+               </property>
+               <widget class="QLabel" name="label_11">
+                <property name="geometry">
+                 <rect>
+                  <x>20</x>
+                  <y>6</y>
+                  <width>71</width>
+                  <height>20</height>
+                 </rect>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Przebieg</string>
+                </property>
+               </widget>
+               <widget class="QPlainTextEdit" name="przebiegOD">
+                <property name="geometry">
+                 <rect>
+                  <x>40</x>
+                  <y>30</y>
+                  <width>101</width>
+                  <height>31</height>
+                 </rect>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(255, 255, 255);</string>
+                </property>
+               </widget>
+               <widget class="QPlainTextEdit" name="Przebieg_Do">
+                <property name="geometry">
+                 <rect>
+                  <x>210</x>
+                  <y>30</y>
+                  <width>101</width>
+                  <height>31</height>
+                 </rect>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(255, 255, 255);</string>
+                </property>
+               </widget>
+               <widget class="QLabel" name="label_12">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>40</y>
+                  <width>21</width>
+                  <height>20</height>
+                 </rect>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Od:</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+               <widget class="QLabel" name="label_13">
+                <property name="geometry">
+                 <rect>
+                  <x>180</x>
+                  <y>40</y>
+                  <width>21</width>
+                  <height>20</height>
+                 </rect>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Do:</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </widget>
+             </item>
+            </layout>
+            <zorder>frame_5</zorder>
+            <zorder>label</zorder>
+            <zorder>frame_3</zorder>
+            <zorder>frame_4</zorder>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="frame_2">
+            <property name="frameShape">
+             <enum>QFrame::Box</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <property name="lineWidth">
+             <number>2</number>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_5">
+             <item>
+              <widget class="QPushButton" name="kryteria_btn">
+               <property name="font">
+                <font>
+                 <pointsize>11</pointsize>
+                </font>
+               </property>
+               <property name="accessibleDescription">
+                <string/>
+               </property>
+               <property name="layoutDirection">
+                <enum>Qt::LeftToRight</enum>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background:rgb(204, 88, 90)</string>
+               </property>
+               <property name="text">
+                <string>Przeglądaj samochody spełniające kryteria</string>
+               </property>
+               <property name="autoDefault">
+                <bool>false</bool>
+               </property>
+               <property name="default">
+                <bool>false</bool>
+               </property>
+               <property name="flat">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="najlepsza_rekomendacja_btn">
+               <property name="font">
+                <font>
+                 <pointsize>11</pointsize>
+                </font>
+               </property>
+               <property name="accessibleDescription">
+                <string/>
+               </property>
+               <property name="layoutDirection">
+                <enum>Qt::LeftToRight</enum>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background:rgb(204, 88, 90)</string>
+               </property>
+               <property name="text">
+                <string>Znajdź najlepszą ofertę</string>
+               </property>
+               <property name="autoDefault">
+                <bool>false</bool>
+               </property>
+               <property name="default">
+                <bool>false</bool>
+               </property>
+               <property name="flat">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="rekomendacja_zbior">
+         <attribute name="title">
+          <string>Rekomendacja sprośród zbioru</string>
+         </attribute>
+         <widget class="QFrame" name="frame_6">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>1081</width>
+            <height>578</height>
+           </rect>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::Box</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <property name="lineWidth">
+           <number>2</number>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_10">
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_11">
+             <item>
+              <widget class="QLabel" name="label_27">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>11</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Spośród wszystkich samochodów, wybierz te spośród których chcesz uzyskać rekomendację</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignHCenter|Qt::AlignTop</set>
+               </property>
+               <property name="margin">
+                <number>9</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="wybierz_samochody_btn">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>11</pointsize>
+                </font>
+               </property>
+               <property name="layoutDirection">
+                <enum>Qt::LeftToRight</enum>
+               </property>
+               <property name="autoFillBackground">
+                <bool>false</bool>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background:rgb(204, 88, 90)</string>
+               </property>
+               <property name="text">
+                <string>Wybierz samochody</string>
+               </property>
+               <property name="default">
+                <bool>false</bool>
+               </property>
+               <property name="flat">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="wybierz_samochody_btn_5">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>11</pointsize>
+                </font>
+               </property>
+               <property name="layoutDirection">
+                <enum>Qt::LeftToRight</enum>
+               </property>
+               <property name="autoFillBackground">
+                <bool>false</bool>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background:rgb(204, 88, 90)</string>
+               </property>
+               <property name="text">
+                <string>Wybierz odpowiednie kryteria</string>
+               </property>
+               <property name="default">
+                <bool>false</bool>
+               </property>
+               <property name="flat">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton">
+               <property name="font">
+                <font>
+                 <pointsize>11</pointsize>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background:rgb(204, 88, 90)</string>
+               </property>
+               <property name="text">
+                <string>Przeprowadź rekomendację</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="dreamCar">
+         <attribute name="title">
+          <string>Wymarzony samochód</string>
+         </attribute>
+         <widget class="QFrame" name="frame_10">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>7</y>
+            <width>1081</width>
+            <height>571</height>
+           </rect>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::Box</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <property name="lineWidth">
+           <number>2</number>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_12">
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_13">
+             <item>
+              <widget class="QLabel" name="label_28">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>11</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Wybierz wymarzony/e samochód/y, a następnie swój aktualny pojazd, aby aplikacja mogła znaleźć najlepsze rozwiązanie dla Ciebie!</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignHCenter|Qt::AlignTop</set>
+               </property>
+               <property name="margin">
+                <number>9</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="wybierz_samochody_btn_2">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>11</pointsize>
+                </font>
+               </property>
+               <property name="layoutDirection">
+                <enum>Qt::LeftToRight</enum>
+               </property>
+               <property name="autoFillBackground">
+                <bool>false</bool>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background:rgb(204, 88, 90)</string>
+               </property>
+               <property name="text">
+                <string>Wybierz wymarzone samochody</string>
+               </property>
+               <property name="default">
+                <bool>false</bool>
+               </property>
+               <property name="flat">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="wybierz_samochody_btn_3">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>11</pointsize>
+                </font>
+               </property>
+               <property name="layoutDirection">
+                <enum>Qt::LeftToRight</enum>
+               </property>
+               <property name="autoFillBackground">
+                <bool>false</bool>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background:rgb(204, 88, 90)</string>
+               </property>
+               <property name="text">
+                <string>Wybierz aktualny samochód</string>
+               </property>
+               <property name="default">
+                <bool>false</bool>
+               </property>
+               <property name="flat">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="wybierz_samochody_btn_6">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>11</pointsize>
+                </font>
+               </property>
+               <property name="layoutDirection">
+                <enum>Qt::LeftToRight</enum>
+               </property>
+               <property name="autoFillBackground">
+                <bool>false</bool>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background:rgb(204, 88, 90)</string>
+               </property>
+               <property name="text">
+                <string>Wybierz odpowiednie kryteria</string>
+               </property>
+               <property name="default">
+                <bool>false</bool>
+               </property>
+               <property name="flat">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_2">
+               <property name="font">
+                <font>
+                 <pointsize>11</pointsize>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background:rgb(204, 88, 90)</string>
+               </property>
+               <property name="text">
+                <string>Przeprowadź rekomendację</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="tab_4">
+         <attribute name="title">
+          <string>Ocena jakości samochodu</string>
+         </attribute>
+         <widget class="QFrame" name="frame_11">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>1081</width>
+            <height>571</height>
+           </rect>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::Box</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <property name="lineWidth">
+           <number>2</number>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_14">
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_15">
+             <item>
+              <widget class="QLabel" name="label_29">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>11</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Wybierz samochód a my sprawdzimy, czy jest on warty zakupu! </string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignHCenter|Qt::AlignTop</set>
+               </property>
+               <property name="margin">
+                <number>9</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="wybierz_samochody_btn_4">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>11</pointsize>
+                </font>
+               </property>
+               <property name="layoutDirection">
+                <enum>Qt::LeftToRight</enum>
+               </property>
+               <property name="autoFillBackground">
+                <bool>false</bool>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background:rgb(204, 88, 90)</string>
+               </property>
+               <property name="text">
+                <string>Wybierz samochód</string>
+               </property>
+               <property name="default">
+                <bool>false</bool>
+               </property>
+               <property name="flat">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_3">
+               <property name="font">
+                <font>
+                 <pointsize>11</pointsize>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background:rgb(204, 88, 90)</string>
+               </property>
+               <property name="text">
+                <string>Oceń samochód</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QGridLayout" name="gridLayout_3"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1130</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
