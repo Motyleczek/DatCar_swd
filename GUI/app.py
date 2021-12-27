@@ -1,5 +1,7 @@
 import pandas as pd
 import numpy as np
+from kryteria import Ui_Criteria
+from data_choose import Ui_Choose
 from data import pandasModel, Ui_Form
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -7,6 +9,10 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_DatCar(object):
     def setupUi(self, DatCar):
         self.database = pd.DataFrame()
+        self.selected_dream_cars = []
+        self.selected_owned_cars = []
+        self.selected_cars = []
+        self.criterias = {}
         DatCar.setObjectName("DatCar")
         DatCar.resize(1130, 806)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
@@ -485,7 +491,15 @@ class Ui_DatCar(object):
         self.database_btn.clicked.connect(self.view_all_cars)
         self.kryteria_btn.clicked.connect(self.show_cars_fulfilling_criteria)
         self.najlepsza_rekomendacja_btn.clicked.connect(self.recommendation_with_criterias)
-
+        self.wybierz_samochody_btn.clicked.connect(self.choose_cars)
+        self.wybierz_samochody_btn_2.clicked.connect(self.choose_dream_cars)
+        self.wybierz_samochody_btn_3.clicked.connect(self.choose_owned_cars)
+        self.wybierz_samochody_btn_4.clicked.connect(self.choose_cars)
+        self.wybierz_samochody_btn_5.clicked.connect(self.choose_criterias)
+        self.wybierz_samochody_btn_6.clicked.connect(self.choose_criterias)
+        self.pushButton.clicked.connect(self.recommend_topsis)
+        self.pushButton_2.clicked.connect(self.recommend_rsm)
+        self.pushButton_3.cliced.connect(self.rate_car)
         self.comboBox_paliwo.addItem("--")
         self.comboBox_marka.addItem("--")
         self.comboBox_skrzynia.addItem("--")
@@ -591,6 +605,48 @@ class Ui_DatCar(object):
     
     def recommendation_with_criterias(self):
         #TODO: wywołanie funkcji Michała i wyświetlenie wyniku
+        pass
+
+    def choose_cars(self):
+        self.widget = QtWidgets.QWidget()
+        self.table_window = Ui_Choose(self.selected_cars)
+        self.table_window.setupUi(self.widget)
+        model = pandasModel(self.database)
+        self.table_window.tableView.setModel(model)
+        self.widget.show()
+
+    def choose_dream_cars(self):
+        self.widget = QtWidgets.QWidget()
+        self.table_window = Ui_Choose(self.selected_dream_cars)
+        self.table_window.setupUi(self.widget)
+        model = pandasModel(self.database)
+        self.table_window.tableView.setModel(model)
+        self.widget.show()
+
+    def choose_owned_cars(self):
+        self.widget = QtWidgets.QWidget()
+        self.table_window = Ui_Choose(self.selected_owned_cars)
+        self.table_window.setupUi(self.widget)
+        model = pandasModel(self.database)
+        self.table_window.tableView.setModel(model)
+        self.widget.show()
+
+    def choose_criterias(self):
+        self.criterias_widget = QtWidgets.QWidget()
+        self.criterias_list = Ui_Criteria()
+        self.criterias_list.setupUi(self.criterias_widget, self.criterias)
+        self.criterias_widget.show()
+       
+    def recommend_topsis(self):
+        #TODO: wywołanie metody Michała - topsis
+        pass
+    
+    def recommend_rsm(self):
+        #TODO: wywołanie metody Michała - rsm
+        pass
+
+    def rate_car(self):
+        #TODO: wywołanie metody sprawdzającej czy warto kupić samochód
         pass
 
 if __name__ == "__main__":
