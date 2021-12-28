@@ -6,9 +6,10 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_Choose(object):
-    def __init__(self, car_list) -> None:
+    def __init__(self, car_list, database) -> None:
         super().__init__()
-        self.car_list = car_list
+        self.database = database
+        self.chosen_indexes = car_list
 
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -28,23 +29,25 @@ class Ui_Choose(object):
         Form.setWindowTitle(_translate("Form", "Table"))
     
     def viewClicked(self, currentIndex):
-        if currentIndex.row() not in self.car_list:
-            self.car_list.append(currentIndex.row())
+        if currentIndex.row() not in self.chosen_indexes:
+            self.chosen_indexes.append(currentIndex.row())
             self.setColortoRow(self.tableView.model(), currentIndex)
             self.Form.setWindowTitle("Element został dodany!")
         else:
-            self.Form.setWindowTitle("Element znajduje się już na liście!")
+            self.chosen_indexes.remove(currentIndex.row())
+            self.Form.setWindowTitle("Element został usunięty!")
+            self.setColortoRow(self.tableView.model(), currentIndex)
         self.tableView.setModel(self.tableView.model())
 
     def setColortoRow(self, table, currentIndex):
-        for j in range(table.columnCount()):
-            table.data(currentIndex,role=Qt.BackgroundRole)
+        table.data(currentIndex, role=Qt.BackgroundRole)
     
 class pandasModel(QAbstractTableModel):
 
-    def __init__(self, data):
+    def __init__(self, data, selected):
         QAbstractTableModel.__init__(self)
         self._data = data
+        self.collection = selected
 
 
     def rowCount(self, parent=None):
@@ -58,7 +61,10 @@ class pandasModel(QAbstractTableModel):
             if role == Qt.DisplayRole:
                 return str(self._data.iloc[index.row(), index.column()])
             if role == Qt.BackgroundRole:
-                return QtGui.QColor(255,255,100)
+                if index.row() in self.collection:
+                    return QtGui.QBrush(QtGui.QColor(255, 0, 0, 127))
+                else:
+                    return QtGui.QBrush(Qt.white)
         return None
 
     def headerData(self, col, orientation, role):

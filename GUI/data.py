@@ -39,7 +39,6 @@ class pandasModel(QAbstractTableModel):
         if index.isValid():
             if role == Qt.DisplayRole:
                 return str(self._data.iloc[index.row(), index.column()])
-
         return None
 
     def headerData(self, col, orientation, role):
