@@ -608,7 +608,7 @@ class Ui_DatCar(object):
         self.widget.show()
     
     def recommendation_with_criterias(self):
-        #TODO: wywołanie funkcji Michała i wyświetlenie wyniku
+        #TODO: wywołanie funkcji Michała i wyświetlenie wyniku -  niezdominowane wzgledem punktu idealnego
         pass
 
     def choose_cars(self):
