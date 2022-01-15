@@ -560,7 +560,7 @@ class Ui_DatCar(object):
         if self.comboBox_nadwozie.currentText() != "--":
             self.cars = self.cars.loc[self.cars['Nadwozie'] == self.comboBox_nadwozie.currentText()]
         if self.comboBox_paliwo.currentText() != "--":
-            self.cars = self.cars.loc[self.cars['Paliwo'] == self.comboBox_paliwo.currentText()]
+            self.cars = self.cars.loc[self.cars['Rodzaj paliwa'] == self.comboBox_paliwo.currentText()]
         if self.comboBox_gwarancja.currentText() != "--":
             self.cars = self.cars.loc[self.cars['Gwarancja'] == self.comboBox_gwarancja.currentText()]
         if self.Cena_OD.toPlainText():
@@ -608,20 +608,21 @@ class Ui_DatCar(object):
         self.widget.show()
     
     def recommendation_with_criterias(self):
-        #TODO: wywołanie funkcji Michała i wyświetlenie wyniku
+        #TODO: wywołanie funkcji Michała i wyświetlenie wyniku -  niezdominowane wzgledem punktu idealnego
         pass
 
     def choose_cars(self):
         self.widget = QtWidgets.QWidget()
-        self.table_window = Ui_Choose(self.selected_id, self.database)
+        self.table_window = Ui_Choose(self.selected_id, self.selected_cars, self.database)
         self.table_window.setupUi(self.widget)
         model = pandasChooseModel(self.database, self.selected_id)
         self.table_window.tableView.setModel(model)
         self.widget.show()
+        print(self.selected_id)
 
     def choose_dream_cars(self):
         self.widget = QtWidgets.QWidget()
-        self.table_window = Ui_Choose(self.selected_dream_id, self.database)
+        self.table_window = Ui_Choose(self.selected_dream_id, self.selected_dream_cars, self.database)
         self.table_window.setupUi(self.widget)
         model = pandasChooseModel(self.database, self.selected_dream_id)
         self.table_window.tableView.setModel(model)
@@ -629,7 +630,7 @@ class Ui_DatCar(object):
 
     def choose_owned_cars(self):
         self.widget = QtWidgets.QWidget()
-        self.table_window = Ui_Choose(self.selected_owned_id, self.database)
+        self.table_window = Ui_Choose(self.selected_owned_id, self.selected_owned_cars, self.database)
         self.table_window.setupUi(self.widget)
         model = pandasChooseModel(self.database, self.selected_owned_id)
         self.table_window.tableView.setModel(model)
