@@ -6,26 +6,27 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_Choose(object):
-    def __init__(self, car_list, database) -> None:
+    def __init__(self, car_id_list, car_list, database) -> None:
         super().__init__()
         self.database = database
         self._data = database
-        self.chosen_indexes = car_list
+        self.chosen_indexes = car_id_list
+        self.chosen_cars = car_list
 
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(1298, 885)
+        Form.resize(1421, 885)
         Form.setAcceptDrops(False)
         self.tableView = QtWidgets.QTableView(Form)
         self.tableView.setGeometry(QtCore.QRect(0, 0, 1521, 885))
         self.tableView.setObjectName("tableView")
         self.tableView.setSelectionBehavior(QtWidgets.QTableView.SelectRows)
         self.filter = QtWidgets.QPlainTextEdit(Form)
-        self.filter.setGeometry(QtCore.QRect(1120, 30, 101, 31))
+        self.filter.setGeometry(QtCore.QRect(1220, 30, 101, 31))
         self.filter.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.filter.setObjectName("filter")
         self.label_29 = QtWidgets.QLabel(Form)
-        self.label_29.setGeometry(QtCore.QRect(1120, 5, 101, 31))
+        self.label_29.setGeometry(QtCore.QRect(1220, 5, 101, 31))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHeightForWidth(self.label_29.sizePolicy().hasHeightForWidth())
         self.label_29.setSizePolicy(sizePolicy)
@@ -36,11 +37,11 @@ class Ui_Choose(object):
         self.label_29.setObjectName("label_29")
 
         self.filter_model = QtWidgets.QPlainTextEdit(Form)
-        self.filter_model.setGeometry(QtCore.QRect(1120, 100, 101, 31))
+        self.filter_model.setGeometry(QtCore.QRect(1220, 100, 101, 31))
         self.filter_model.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.filter_model.setObjectName("filter_model")
         self.label_30 = QtWidgets.QLabel(Form)
-        self.label_30.setGeometry(QtCore.QRect(1120, 80, 101, 31))
+        self.label_30.setGeometry(QtCore.QRect(1220, 80, 101, 31))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHeightForWidth(self.label_30.sizePolicy().hasHeightForWidth())
         self.label_30.setSizePolicy(sizePolicy)
@@ -51,11 +52,11 @@ class Ui_Choose(object):
         self.label_30.setObjectName("label_30")
 
         self.filter_nadwozie = QtWidgets.QPlainTextEdit(Form)
-        self.filter_nadwozie.setGeometry(QtCore.QRect(1120, 170, 101, 31))
+        self.filter_nadwozie.setGeometry(QtCore.QRect(1220, 170, 101, 31))
         self.filter_nadwozie.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.filter_nadwozie.setObjectName("filter_nadwozie")
         self.label_32 = QtWidgets.QLabel(Form)
-        self.label_32.setGeometry(QtCore.QRect(1120, 150, 101, 31))
+        self.label_32.setGeometry(QtCore.QRect(1220, 150, 101, 31))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHeightForWidth(self.label_32.sizePolicy().hasHeightForWidth())
         self.label_32.setSizePolicy(sizePolicy)
@@ -66,11 +67,11 @@ class Ui_Choose(object):
         self.label_32.setObjectName("label_32")
 
         self.filter_skrzynia = QtWidgets.QPlainTextEdit(Form)
-        self.filter_skrzynia.setGeometry(QtCore.QRect(1120, 250, 101, 31))
+        self.filter_skrzynia.setGeometry(QtCore.QRect(1220, 250, 101, 31))
         self.filter_skrzynia.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.filter_skrzynia.setObjectName("filter_skrzynia")
         self.label_33 = QtWidgets.QLabel(Form)
-        self.label_33.setGeometry(QtCore.QRect(1120, 230, 111, 31))
+        self.label_33.setGeometry(QtCore.QRect(1220, 230, 111, 31))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHeightForWidth(self.label_33.sizePolicy().hasHeightForWidth())
         self.label_33.setSizePolicy(sizePolicy)
@@ -81,11 +82,11 @@ class Ui_Choose(object):
         self.label_33.setObjectName("label_33")
 
         self.filter_kolor = QtWidgets.QPlainTextEdit(Form)
-        self.filter_kolor.setGeometry(QtCore.QRect(1120, 320, 101, 31))
+        self.filter_kolor.setGeometry(QtCore.QRect(1220, 320, 101, 31))
         self.filter_kolor.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.filter_kolor.setObjectName("filter_kolor")
         self.label_31 = QtWidgets.QLabel(Form)
-        self.label_31.setGeometry(QtCore.QRect(1120, 300, 101, 31))
+        self.label_31.setGeometry(QtCore.QRect(1220, 300, 101, 31))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHeightForWidth(self.label_31.sizePolicy().hasHeightForWidth())
         self.label_31.setSizePolicy(sizePolicy)
@@ -116,7 +117,6 @@ class Ui_Choose(object):
             self._data = self._data[self._data["Skrzynia biegów"].str.contains(self.filter_skrzynia.toPlainText())]
         if self.filter_nadwozie.toPlainText() != "":
             self._data = self._data[self._data.Nadwozie.str.contains(self.filter_nadwozie.toPlainText())]
-        # _data = self.database[self.database.Marka.str.contains(self.filter.toPlainText()) | self.database.Model.str.contains(self.filter_model.toPlainText()) | self.database.Kolor.str.contains(self.filter_kolor.toPlainText()) | self.database["Skrzynia biegów"].str.contains(self.filter_skrzynia.toPlainText()) | self.database.Nadwozie.str.contains(self.filter_nadwozie.toPlainText()) ]
         new_model = pandasModel(self._data, self.chosen_indexes)
         self.tableView.setModel(new_model)
 
@@ -133,10 +133,11 @@ class Ui_Choose(object):
     def viewClicked(self, currentIndex):
         if currentIndex.row() not in self.chosen_indexes:
             self.chosen_indexes.append(currentIndex.row())
+            self.chosen_cars = self.chosen_cars.append(self._data.loc[self._data["ID"]== int(self.tableView.model().index(currentIndex.row(),0).data())])
             self.setColortoRow(self.tableView.model(), currentIndex)
             self.Form.setWindowTitle("Element został dodany!")
         else:
-            self.chosen_indexes.remove(currentIndex.row())
+            self.chosen_indexes.remove(self.tableView.model().index(currentIndex.row(),0).data())
             self.Form.setWindowTitle("Element został usunięty!")
             self.setColortoRow(self.tableView.model(), currentIndex)
         self.tableView.setModel(self.tableView.model())
@@ -167,7 +168,7 @@ class pandasModel(QAbstractTableModel):
                     return QtGui.QBrush(QtGui.QColor(255, 0, 0, 127))
                 else:
                     return QtGui.QBrush(Qt.white)
-        return None
+            return None
 
     def headerData(self, col, orientation, role):
         if orientation == Qt.Horizontal and role == Qt.DisplayRole:
