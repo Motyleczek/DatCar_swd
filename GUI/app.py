@@ -5,6 +5,7 @@ from data_choose import Ui_Choose
 from data_choose import pandasModel as pandasChooseModel
 from data import pandasModel, Ui_Form
 from PyQt5 import QtCore, QtGui, QtWidgets
+from ..ML.load_model_example import ML_predict
 
 
 class Ui_DatCar(object):
@@ -582,8 +583,8 @@ class Ui_DatCar(object):
 
     def read_data(self):
         # TODO zmiana tylko lokalnie -- usunąć przed MERGEM
-        # self.database = pd.read_csv("DatCar_swd/Data/cars.csv")
-        self.database = pd.read_csv("GUI/cars.csv")
+        self.database = pd.read_csv("Data/cars.csv")
+        #self.database = pd.read_csv("GUI/cars.csv")
 
     def initialize_criteria(self):
         self.paliwa = self.database["Rodzaj paliwa"].unique()
@@ -689,6 +690,7 @@ class Ui_DatCar(object):
 
         # lista wag, zgodnie z kolejnością: cena, przebieg, pojemność, rok produkcji
         # minimalizacja by default
+        print(self.selected_cars)
         weights = [1, 1, 1, 1]
         keys = self.criterias.keys()
         if 'Cena' in keys:
@@ -752,6 +754,7 @@ class Ui_DatCar(object):
 
     def rate_car(self):
         #TODO: wywołanie metody sprawdzającej czy warto kupić samochód
+        #self.selected_cars
         pass
 
     sorted_database = None

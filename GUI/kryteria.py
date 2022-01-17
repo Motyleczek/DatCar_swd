@@ -155,11 +155,11 @@ class Ui_Criteria(object):
         if self.checkBox.isChecked():
             self.dict["Rok produkcji"] = self.comboBox.currentText()
         if self.checkBox_2.isChecked():
-            self.dict["Pojemność"] = self.comboBox.currentText()   
+            self.dict["Pojemność"] = self.comboBox_2.currentText()   
         if self.checkBox_3.isChecked():
-            self.dict["Przebieg"] = self.comboBox.currentText()
+            self.dict["Przebieg"] = self.comboBox_3.currentText()
         if self.checkBox_4.isChecked():
-            self.dict["Cena"] = self.comboBox.currentText()
+            self.dict["Cena"] = self.comboBox_4.currentText()
         print(self.dict)
         self.Form.close()
 
