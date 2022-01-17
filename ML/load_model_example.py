@@ -2,9 +2,9 @@ import pickle
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
+from copy import deepcopy
 
-
-def ML_predict(data: pd.DataFrame) -> np.ndarray:
+def ML_predict(data: pd.DataFrame) -> pd.DataFrame:
     """
     OPIS
 
@@ -41,7 +41,7 @@ def ML_predict(data: pd.DataFrame) -> np.ndarray:
 
     #DATA
     old_df = df
-    df = data
+    df = deepcopy(data)
     if df.isna().sum().sum() > 0: # tu po prostu rzucam error, można to jakoś rozbudować
         raise ValueError("W danych występują brakujące wartości")
     df["Age"] = 2022 - df['Rok produkcji']
@@ -55,7 +55,7 @@ def ML_predict(data: pd.DataFrame) -> np.ndarray:
     # df['Kategoria'] = pd.cut(temp['Cena_y'], bins,  right=False, labels=kat_bins)
     if df.isna().sum().sum() > 0: # tu wcześniej działy się dziwne rzeczy, więc na wszelki wypadek wrzucam tu error
         raise ValueError("Ogolnie to nie powinno się wydarzyć, ale no w razie czego z nikąd się nagle NaN-y pewnie pojawiły")
-    df.drop(['Marka', 'Model', 'Rok produkcji'], axis=1, inplace=True)
+    df.drop(['Marka', 'Model', 'Rok produkcji','Cena'], axis=1, inplace=True)
     df_dummies = dummies('Skrzynia biegów', df)
     df_dummies = dummies('Kolor', df_dummies)
     df_dummies = dummies('Nadwozie', df_dummies)
@@ -108,7 +108,13 @@ def ML_predict(data: pd.DataFrame) -> np.ndarray:
             x[col] = [0 for i in range(x.shape[0])]
     x = x[all_cols_to_model]
     predictions = loaded_model.predict(x)
-    return predictions
+    data['Sugerowana cena'] = predictions
+    #opłacalność (różnica cen + labels)
+    data['Opłacalność'] = data['Sugerowana cena'] - data['Cena']
+    bins = [-50000,-1500,-500,500,1500,50000]
+    kat_bins = ['Zdecyowanie za wysoka cena', 'Lekko za wysoka cena', 'Optymalna cena', 'Opłacalne', 'Prawdziwa okazja!']
+    data['Opłacalność'] = pd.cut(data['Opłacalność'], bins,  right=False, labels=kat_bins)
+    return data
 
 
 def dummies(col_name,df): #pomocnicza funkcja do ML_predict()
@@ -141,12 +147,13 @@ if __name__ == "__main__":
     #data = df.iloc[:1000]  # przykładowe kilka modeli samochodów
     #data = df.iloc[[4]]
     data.dropna(inplace=True)
-    data_x = data.drop(["Cena"],axis=1)
-    data_y = data["Cena"]
-    predictions = ML_predict(data_x)
-    print("Cena przewidziana przez algorytm:\n",predictions)
-    print("Cena faktyczna (z ogłoszenia):\n",data_y)
-    print("Różnica w cenie (oszacowana przez algorytm - cena z ogłoszenia):\n",predictions - data_y)
+    #data_x = data.drop(["Cena"],axis=1)
+    #data_y = data["Cena"]
+    predictions = ML_predict(data)
+    print(predictions)
+    #print("Cena przewidziana przez algorytm:\n",predictions)
+    print("Cena faktyczna (z ogłoszenia):\n",data["Cena"])
+    #print("Różnica w cenie (oszacowana przez algorytm - cena z ogłoszenia):\n",predictions - data_y)
 
     from sklearn.metrics import mean_squared_error
-    print("Root Mean Squared Error (RMSE): ", np.sqrt(mean_squared_error(predictions, data_y)))
+    #print("Root Mean Squared Error (RMSE): ", np.sqrt(mean_squared_error(predictions, data_y)))
