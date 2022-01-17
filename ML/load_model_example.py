@@ -38,6 +38,7 @@ def ML_predict(data: pd.DataFrame) -> np.ndarray:
         category_dict[unique_val.iloc[i]['Marka']] = unique_val.iloc[i]['Kategoria']
 
 
+
     #DATA
     old_df = df
     df = data
@@ -64,7 +65,8 @@ def ML_predict(data: pd.DataFrame) -> np.ndarray:
     df = df_dummies
     scaler = MinMaxScaler()
     num_vars = ['Przebieg', 'Pojemność', 'Age']
-    df[num_vars] = scaler.fit_transform(df[num_vars])
+    scaler.fit(old_df[num_vars])
+    df[num_vars] = scaler.transform(df[num_vars])
     # dane są gotowe, przechodzimy do MODEL PRZEWIDYWANIE
     x = df
     #uzupełnienie kolumn eh
@@ -134,9 +136,11 @@ if __name__ == "__main__":
 
     # przykładowe użycie funkcji do przewidywania cen
     df = pd.read_csv("../../DatCar_swd/Data/cars.csv")
-    data = df.dropna()
-    #data = df.iloc[[1,69,420,2137,32121,1233,7544,10000]] #przykładowe kilka modeli samochodów
+    #data = df.dropna()
+    data = df.iloc[[1,69,420,2137,32121,1233,7544,10000]] #przykładowe kilka modeli samochodów
+    #data = df.iloc[:1000]  # przykładowe kilka modeli samochodów
     #data = df.iloc[[4]]
+    data.dropna(inplace=True)
     data_x = data.drop(["Cena"],axis=1)
     data_y = data["Cena"]
     predictions = ML_predict(data_x)
