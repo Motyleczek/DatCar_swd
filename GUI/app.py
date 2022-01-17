@@ -549,8 +549,15 @@ class Ui_DatCar(object):
         self.pushButton_3.setText(_translate("DatCar", "Oceń samochód"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), _translate("DatCar", "Ocena jakości samochodu"))
 
-    def show_cars_fulfilling_criteria(self):
-        self.cars = self.database
+    def show_cars_fulfilling_criteria(self, sorted=False, topsis=False):
+        # dodatek do funkcji wyświetlania po sortowaniach
+        if sorted:
+            self.cars = self.sorted_database
+        elif topsis:
+            self.cars = self.topsis_sorted
+        else:
+            self.cars = self.database
+
         if self.comboBox_marka.currentText() != "--":
             self.cars = self.cars.loc[self.cars['Marka'] == self.comboBox_marka.currentText()]
         if self.comboBox_kolor.currentText() != "--":
@@ -574,7 +581,9 @@ class Ui_DatCar(object):
         self.view_table_cars(self.cars)
 
     def read_data(self):
-        self.database = pd.read_csv("DatCar_swd/Data/cars.csv")
+        # TODO zmiana tylko lokalnie -- usunąć przed MERGEM
+        # self.database = pd.read_csv("DatCar_swd/Data/cars.csv")
+        self.database = pd.read_csv("GUI/cars.csv")
 
     def initialize_criteria(self):
         self.paliwa = self.database["Rodzaj paliwa"].unique()
@@ -608,8 +617,37 @@ class Ui_DatCar(object):
         self.widget.show()
     
     def recommendation_with_criterias(self):
-        #TODO: wywołanie funkcji Michała i wyświetlenie wyniku -  niezdominowane wzgledem punktu idealnego
-        pass
+        #DONE: wywołanie funkcji Michała i wyświetlenie wyniku -  niezdominowane wzgledem punktu idealnego
+
+        # zrobimy to tak, że posortujemy WSZYSKTO, a potem wyświetlimy tylko te, które spełniają kryteria za pomocą
+        # lekko zmodyfikowanego "show_cars_fulfilling_cryteria"
+
+        # patrzymy na punkt idealny (znajdujemy go względem ceny, przebiegu, roku produkcji oraz pojemności)
+        # dodajemy kolumne do dataframe
+        # sortujemy resztę względem tej kolumny rosnąco
+        # mamy posortowany dataframe
+        self.sorted_database = self.database.copy()
+        index_list = ["Przebieg", "Cena", "Rok produkcji", "Pojemność"]
+        helper_df = self.sorted_database[index_list]
+        helper_df.fillna(0)
+        helper_np = helper_df.to_numpy()
+        helper_np = np.nan_to_num(helper_np)
+
+        # tutaj przy założeniu że wszystkie kryteria są równoważne
+        to_norm = np.max(helper_np, axis=0)
+        helper_np = helper_np/to_norm
+
+        # minimalizujemy przebieg i cene, maksymalizujemy rok produkcji i pojemność
+        helper_weights = np.array([1, 1, -1, -1])
+        helper_np = helper_np * helper_weights
+        ideal_point = np.min(helper_np, axis=0)
+        distances = []
+        for i in range(helper_np.shape[0]):
+            distance = np.linalg.norm(helper_np[i, :] - ideal_point) / 1000
+            distances.append(distance)
+        self.sorted_database["sorting_distance"] = distances
+        self.sorted_database = self.sorted_database.sort_values("sorting_distance")
+        self.show_cars_fulfilling_criteria(sorted=True)
 
     def choose_cars(self):
         self.widget = QtWidgets.QWidget()
@@ -641,10 +679,72 @@ class Ui_DatCar(object):
         self.criterias_list = Ui_Criteria()
         self.criterias_list.setupUi(self.criterias_widget, self.criterias)
         self.criterias_widget.show()
-       
+
     def recommend_topsis(self):
-        #TODO: wywołanie metody Michała - topsis
-        pass
+        #Done: wywołanie metody Michała - topsis
+
+        # wszystko od naciśnięcia guzika dzieje się tutaj
+        # wybrane ID są w self.selected_id
+        # kryteria są w self.criterias
+
+        # lista wag, zgodnie z kolejnością: cena, przebieg, pojemność, rok produkcji
+        # minimalizacja by default
+        weights = [1, 1, 1, 1]
+        keys = self.criterias.keys()
+        if 'Cena' in keys:
+            if self.criterias['Cena'] == "MAXIMUM":
+                weights[0] = -1
+        if 'Rok produkcji' in keys:
+            if self.criterias['Rok produkcji'] == "MAXIMUM":
+                weights[1] = -1
+        if 'Pojemność' in keys:
+            if self.criterias['Pojemność'] == "MAXIMUM":
+                weights[2] = -1
+        if 'Przebieg' in keys:
+            if self.criterias['Przebieg'] == "MAXIMUM":
+                weights[3] = -1
+
+        lista_nazw = ["Cena", "Rok produkcji", "Przebieg", "Pojemność"]
+        topsis_df = self.database[lista_nazw]
+        topsis_df = topsis_df.iloc[self.selected_id]
+
+        topsis_np = topsis_df.to_numpy()
+
+        # unormowanie
+        norma = np.linalg.norm(topsis_np)
+        topsis_np = topsis_np/norma
+
+        # uwzględnienie 'wag'
+        topsis_np = np.nan_to_num(topsis_np * weights)
+
+        # ideal point:
+        p_ideal = np.min(topsis_np, axis=0)
+
+        # non-ideal:
+        p_non_ideal = np.max(topsis_np)
+
+        # adding necessary columns for further calculations:
+        ideal_dist = np.array([])
+        non_ideal_dist = np.array([])
+
+        # calculating distace with given norm:
+        for i in range(topsis_np.shape[0]):
+            ideal_dist = np.append(ideal_dist, np.linalg.norm(topsis_np[i, :] - p_ideal))
+            non_ideal_dist = np.append(non_ideal_dist, np.linalg.norm(topsis_np[i, :] - p_non_ideal))
+
+        # necessary calculations:
+        ranking = non_ideal_dist/(non_ideal_dist + ideal_dist)
+        ranking = np.reshape(ranking, (len(ranking), 1))
+
+        final_df = self.database.iloc[self.selected_id]
+        final_df["ranking"] = ranking
+
+        final_df = final_df.sort_values("ranking", ascending=False)
+        self.topsis_sorted = final_df
+        self.show_cars_fulfilling_criteria(topsis=True)
+
+
+
     
     def recommend_rsm(self):
         #TODO: wywołanie metody Michała - rsm
@@ -653,6 +753,9 @@ class Ui_DatCar(object):
     def rate_car(self):
         #TODO: wywołanie metody sprawdzającej czy warto kupić samochód
         pass
+
+    sorted_database = None
+    topsis_sorted = None
 
 if __name__ == "__main__":
     import sys
