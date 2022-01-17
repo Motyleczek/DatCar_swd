@@ -123,6 +123,7 @@ def dummies(col_name,df): #pomocnicza funkcja do ML_predict()
     df.drop([col_name], axis=1, inplace=True)
     return df
 
+'''
 if __name__ == "__main__":
     # przykładowe wykorzystanie gotowego modelu z pliku
     # tylko że to nie zadziała, bo dane trzeba trochę przerobić, żeby można je było wrzucić do modelu
@@ -156,4 +157,4 @@ if __name__ == "__main__":
     #print("Różnica w cenie (oszacowana przez algorytm - cena z ogłoszenia):\n",predictions - data_y)
 
     from sklearn.metrics import mean_squared_error
-    #print("Root Mean Squared Error (RMSE): ", np.sqrt(mean_squared_error(predictions, data_y)))
+    #print("Root Mean Squared Error (RMSE): ", np.sqrt(mean_squared_error(predictions, data_y)))'''
