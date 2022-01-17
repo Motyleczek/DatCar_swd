@@ -549,10 +549,12 @@ class Ui_DatCar(object):
         self.pushButton_3.setText(_translate("DatCar", "Oceń samochód"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), _translate("DatCar", "Ocena jakości samochodu"))
 
-    def show_cars_fulfilling_criteria(self, sorted=False):
-        # dodatek do funkcji wyświetlania po sortowaniu
+    def show_cars_fulfilling_criteria(self, sorted=False, topsis=False):
+        # dodatek do funkcji wyświetlania po sortowaniach
         if sorted:
             self.cars = self.sorted_database
+        elif topsis:
+            self.cars = self.topsis_sorted
         else:
             self.cars = self.database
 
@@ -677,10 +679,72 @@ class Ui_DatCar(object):
         self.criterias_list = Ui_Criteria()
         self.criterias_list.setupUi(self.criterias_widget, self.criterias)
         self.criterias_widget.show()
-       
+
     def recommend_topsis(self):
-        #TODO: wywołanie metody Michała - topsis
-        pass
+        #Done: wywołanie metody Michała - topsis
+
+        # wszystko od naciśnięcia guzika dzieje się tutaj
+        # wybrane ID są w self.selected_id
+        # kryteria są w self.criterias
+
+        # lista wag, zgodnie z kolejnością: cena, przebieg, pojemność, rok produkcji
+        # minimalizacja by default
+        weights = [1, 1, 1, 1]
+        keys = self.criterias.keys()
+        if 'Cena' in keys:
+            if self.criterias['Cena'] == "MAXIMUM":
+                weights[0] = -1
+        if 'Rok produkcji' in keys:
+            if self.criterias['Rok produkcji'] == "MAXIMUM":
+                weights[1] = -1
+        if 'Pojemność' in keys:
+            if self.criterias['Pojemność'] == "MAXIMUM":
+                weights[2] = -1
+        if 'Przebieg' in keys:
+            if self.criterias['Przebieg'] == "MAXIMUM":
+                weights[3] = -1
+
+        lista_nazw = ["Cena", "Rok produkcji", "Przebieg", "Pojemność"]
+        topsis_df = self.database[lista_nazw]
+        topsis_df = topsis_df.iloc[self.selected_id]
+
+        topsis_np = topsis_df.to_numpy()
+
+        # unormowanie
+        norma = np.linalg.norm(topsis_np)
+        topsis_np = topsis_np/norma
+
+        # uwzględnienie 'wag'
+        topsis_np = np.nan_to_num(topsis_np * weights)
+
+        # ideal point:
+        p_ideal = np.min(topsis_np, axis=0)
+
+        # non-ideal:
+        p_non_ideal = np.max(topsis_np)
+
+        # adding necessary columns for further calculations:
+        ideal_dist = np.array([])
+        non_ideal_dist = np.array([])
+
+        # calculating distace with given norm:
+        for i in range(topsis_np.shape[0]):
+            ideal_dist = np.append(ideal_dist, np.linalg.norm(topsis_np[i, :] - p_ideal))
+            non_ideal_dist = np.append(non_ideal_dist, np.linalg.norm(topsis_np[i, :] - p_non_ideal))
+
+        # necessary calculations:
+        ranking = non_ideal_dist/(non_ideal_dist + ideal_dist)
+        ranking = np.reshape(ranking, (len(ranking), 1))
+
+        final_df = self.database.iloc[self.selected_id]
+        final_df["ranking"] = ranking
+
+        final_df = final_df.sort_values("ranking", ascending=False)
+        self.topsis_sorted = final_df
+        self.show_cars_fulfilling_criteria(topsis=True)
+
+
+
     
     def recommend_rsm(self):
         #TODO: wywołanie metody Michała - rsm
@@ -691,6 +755,7 @@ class Ui_DatCar(object):
         pass
 
     sorted_database = None
+    topsis_sorted = None
 
 if __name__ == "__main__":
     import sys
