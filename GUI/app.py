@@ -5,7 +5,9 @@ from data_choose import Ui_Choose
 from data_choose import pandasModel as pandasChooseModel
 from data import pandasModel, Ui_Form
 from PyQt5 import QtCore, QtGui, QtWidgets
-from ..ML.load_model_example import ML_predict
+from ML.load_model_example import ML_predict
+from Algorithms.recomender_fcn import *         #robie to tutaj w taki sposób bo nie pamiętam jak jest z
+                                                  # dostępem w pythonie
 
 
 class Ui_DatCar(object):
@@ -550,12 +552,14 @@ class Ui_DatCar(object):
         self.pushButton_3.setText(_translate("DatCar", "Oceń samochód"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), _translate("DatCar", "Ocena jakości samochodu"))
 
-    def show_cars_fulfilling_criteria(self, sorted=False, topsis=False):
+    def show_cars_fulfilling_criteria(self, sorted=False, topsis=False, rms=False):
         # dodatek do funkcji wyświetlania po sortowaniach
         if sorted:
             self.cars = self.sorted_database
         elif topsis:
             self.cars = self.topsis_sorted
+        elif rms:
+            self.cars = self.rms_results
         else:
             self.cars = self.database
 
@@ -582,9 +586,8 @@ class Ui_DatCar(object):
         self.view_table_cars(self.cars)
 
     def read_data(self):
-        # TODO zmiana tylko lokalnie -- usunąć przed MERGEM
         self.database = pd.read_csv("Data/cars.csv")
-        #self.database = pd.read_csv("GUI/cars.csv")
+        # self.database = pd.read_csv("GUI/cars.csv")
 
     def initialize_criteria(self):
         self.paliwa = self.database["Rodzaj paliwa"].unique()
@@ -745,12 +748,60 @@ class Ui_DatCar(object):
         self.topsis_sorted = final_df
         self.show_cars_fulfilling_criteria(topsis=True)
 
-
-
-    
     def recommend_rsm(self):
-        #TODO: wywołanie metody Michała - rsm
-        pass
+        #TODO: potrzebuje dodatkowego guziczka od wyborów: na ten moment sobie poradze z defaultową wartością
+        idxs = []
+        if self.f_u_idx is None:
+            # jakiś default do testów
+            idxs = [10, 40, 50, 80, 99, 69, 12]
+        else:
+            idxs = self.f_u_idx[:]
+
+        # tutaj to nie potrzebne
+        # TODO: zupełnie sie pozbyć tego guzika od wyboru maks/min
+        # weights = [1, 1, 1, 1]
+        # keys = self.criterias.keys()
+        # if 'Cena' in keys:
+        #     if self.criterias['Cena'] == "MAXIMUM":
+        #         weights[0] = -1
+        # if 'Rok produkcji' in keys:
+        #     if self.criterias['Rok produkcji'] == "MAXIMUM":
+        #         weights[1] = -1
+        # if 'Pojemność' in keys:
+        #     if self.criterias['Pojemność'] == "MAXIMUM":
+        #         weights[2] = -1
+        # if 'Przebieg' in keys:
+        #     if self.criterias['Przebieg'] == "MAXIMUM":
+        #         weights[3] = -1
+
+        # wyciągnięcie z datasetu
+        aspiration = self.database.iloc[self.selected_dream_id]
+        status_quo = self.database.iloc[self.selected_owned_id]
+        f_u_df = self.database.iloc[idxs]
+
+        # przerobienie na tylko te kolumny które mnie interesują + zamiana na numpaja:
+        list_columns = ["Przebieg", "Rok produkcji", "Pojemność", "Cena"]
+        aspiration = aspiration[list_columns].to_numpy()
+        status_quo = status_quo[list_columns].to_numpy()
+        f_u = f_u_df[list_columns].to_numpy()
+
+        # przekazanie jako listy:
+        results, vals = referance_rms(f_u.tolist(), status_quo.tolist(), aspiration.tolist())
+        helper_ids = []
+        for elem in results[:, 0]:
+            found_id_df = f_u_df[f_u_df["Przebieg"] == elem]
+            idx = found_id_df.index.tolist()
+            helper_ids.append(idx[0]-1)
+
+        self.rms_results = self.database.iloc[helper_ids]
+        # self.rms_results["id"] = helper_ids
+        # self.rms_results["Przebieg"] = results[:, 0]
+        # self.rms_results["Rok produkcji"] = results[:, 1]
+        # self.rms_results["Pojemność"] = results[:, 2]
+        # self.rms_results["Cena"] = results[:, 3]
+        self.show_cars_fulfilling_criteria(rms=True)
+
+
 
     def rate_car(self):
         #TODO: wywołanie metody sprawdzającej czy warto kupić samochód
@@ -759,6 +810,11 @@ class Ui_DatCar(object):
 
     sorted_database = None
     topsis_sorted = None
+    rms_results = None
+
+    # tak potrzebuje nazwane te indeksy, jako lista:
+    f_u_idx = None
+
 
 if __name__ == "__main__":
     import sys

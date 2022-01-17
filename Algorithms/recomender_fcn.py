@@ -71,7 +71,7 @@ def naiwne_owd_v3(x: Iterable,
 
     if not isinstance(x, list):
         raise TypeError("Wrong x input type!")
-    elif weights is not None:
+    elif weights is None:
         # jeżeli nic nie podamy jako wagi, zakładam minimalizacje wszystkich kryteriów
         weights = np.array([1 for i in range(len(x[0]))])
     elif not isinstance(weights, np.ndarray):
@@ -289,6 +289,7 @@ def referance_rms(f_u: Union[np.ndarray, List[Union[Tuple, List]]],
     :param f_u: decision set (points to sort)
     :param status_quo: status-quo solutions
     :param aspiration: target points
+    :param weights: weights and
     :param anti_ideal: anti-ideal points
     :param ll_optimality: lower limits of optimality
     :return: sorted f_u points with respective calculated value
@@ -303,25 +304,28 @@ def referance_rms(f_u: Union[np.ndarray, List[Union[Tuple, List]]],
     # IMPORTANT : jeżeli nic nie będzie wychodzić, zakomentować poniższe do linijki 326 i sprawdzić znowu
     # class checking:
     # aspiration and status_quo:
-    checked_aspiration, checked_quo = checking_class(aspiration, status_quo)
-    if not checked_aspiration == aspiration:
-        aspiration = deepcopy(checked_aspiration)
-    if not checked_quo == status_quo:
-        status_quo = deepcopy(checked_quo)
-
-    # aspiration and f_u:
-    checked_aspiration, checked_f_u = checking_class(aspiration, f_u)
-    if not checked_aspiration == aspiration:
-        aspiration = deepcopy(checked_aspiration)
-    if not checked_f_u == f_u:
-        f_u = deepcopy(checked_f_u)
-
-    # f_u and status quo:
-    checked_f_u, checked_quo = checking_class(f_u, status_quo)
-    if not checked_f_u == f_u:
-        f_u = deepcopy(checked_f_u)
-    if not checked_quo == status_quo:
-        status_quo = deepcopy(checked_quo)
+    # checked_aspiration, checked_quo = checking_class(aspiration, status_quo)
+    # if not checked_aspiration == aspiration:
+    #     aspiration = deepcopy(checked_aspiration)
+    # if not checked_quo == status_quo:
+    #     status_quo = deepcopy(checked_quo)
+    #
+    # # aspiration and f_u:
+    # checked_aspiration, checked_f_u = checking_class(aspiration, f_u)
+    # if not checked_aspiration == aspiration:
+    #     aspiration = deepcopy(checked_aspiration)
+    # if not checked_f_u == f_u:
+    #     f_u = deepcopy(checked_f_u)
+    #
+    # # f_u and status quo:
+    # checked_f_u, checked_quo = checking_class(f_u, status_quo)
+    # if not checked_f_u == f_u:
+    #     f_u = deepcopy(checked_f_u)
+    # if not checked_quo == status_quo:
+    #     status_quo = deepcopy(checked_quo)
+    #
+    # if len(aspiration) == 0 or len(f_u) == 0 or len(status_quo) == 0:
+    #     raise SyntaxError("Wrong classes: choose more and/or different")
     # zakomentować DO TEJ LINIJKI <326> TUTAJ
 
 
@@ -432,4 +436,4 @@ def referance_rms(f_u: Union[np.ndarray, List[Union[Tuple, List]]],
     sorted_u[:, :-1] = sorted_u[:, :-1] * max_rescaling
 
     # wynik trzeba wyświetlić, ale nie nadpisywać!!!
-    return sorted_u
+    return sorted_u, individual_scores
