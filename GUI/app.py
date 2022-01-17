@@ -549,8 +549,13 @@ class Ui_DatCar(object):
         self.pushButton_3.setText(_translate("DatCar", "Oceń samochód"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), _translate("DatCar", "Ocena jakości samochodu"))
 
-    def show_cars_fulfilling_criteria(self):
-        self.cars = self.database
+    def show_cars_fulfilling_criteria(self, sorted=False):
+        # dodatek do funkcji wyświetlania po sortowaniu
+        if sorted:
+            self.cars = self.sorted_database
+        else:
+            self.cars = self.database
+
         if self.comboBox_marka.currentText() != "--":
             self.cars = self.cars.loc[self.cars['Marka'] == self.comboBox_marka.currentText()]
         if self.comboBox_kolor.currentText() != "--":
@@ -574,7 +579,9 @@ class Ui_DatCar(object):
         self.view_table_cars(self.cars)
 
     def read_data(self):
-        self.database = pd.read_csv("DatCar_swd/Data/cars.csv")
+        # TODO zmiana tylko lokalnie -- usunąć przed MERGEM
+        # self.database = pd.read_csv("DatCar_swd/Data/cars.csv")
+        self.database = pd.read_csv("GUI/cars.csv")
 
     def initialize_criteria(self):
         self.paliwa = self.database["Rodzaj paliwa"].unique()
@@ -608,8 +615,37 @@ class Ui_DatCar(object):
         self.widget.show()
     
     def recommendation_with_criterias(self):
-        #TODO: wywołanie funkcji Michała i wyświetlenie wyniku -  niezdominowane wzgledem punktu idealnego
-        pass
+        #DONE: wywołanie funkcji Michała i wyświetlenie wyniku -  niezdominowane wzgledem punktu idealnego
+
+        # zrobimy to tak, że posortujemy WSZYSKTO, a potem wyświetlimy tylko te, które spełniają kryteria za pomocą
+        # lekko zmodyfikowanego "show_cars_fulfilling_cryteria"
+
+        # patrzymy na punkt idealny (znajdujemy go względem ceny, przebiegu, roku produkcji oraz pojemności)
+        # dodajemy kolumne do dataframe
+        # sortujemy resztę względem tej kolumny rosnąco
+        # mamy posortowany dataframe
+        self.sorted_database = self.database.copy()
+        index_list = ["Przebieg", "Cena", "Rok produkcji", "Pojemność"]
+        helper_df = self.sorted_database[index_list]
+        helper_df.fillna(0)
+        helper_np = helper_df.to_numpy()
+        helper_np = np.nan_to_num(helper_np)
+
+        # tutaj przy założeniu że wszystkie kryteria są równoważne
+        to_norm = np.max(helper_np, axis=0)
+        helper_np = helper_np/to_norm
+
+        # minimalizujemy przebieg i cene, maksymalizujemy rok produkcji i pojemność
+        helper_weights = np.array([1, 1, -1, -1])
+        helper_np = helper_np * helper_weights
+        ideal_point = np.min(helper_np, axis=0)
+        distances = []
+        for i in range(helper_np.shape[0]):
+            distance = np.linalg.norm(helper_np[i, :] - ideal_point) / 1000
+            distances.append(distance)
+        self.sorted_database["sorting_distance"] = distances
+        self.sorted_database = self.sorted_database.sort_values("sorting_distance")
+        self.show_cars_fulfilling_criteria(sorted=True)
 
     def choose_cars(self):
         self.widget = QtWidgets.QWidget()
@@ -653,6 +689,8 @@ class Ui_DatCar(object):
     def rate_car(self):
         #TODO: wywołanie metody sprawdzającej czy warto kupić samochód
         pass
+
+    sorted_database = None
 
 if __name__ == "__main__":
     import sys
