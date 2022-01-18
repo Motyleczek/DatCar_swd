@@ -8,10 +8,10 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(1298, 885)
+        Form.resize(1498, 885)
         Form.setAcceptDrops(False)
         self.tableView = QtWidgets.QTableView(Form)
-        self.tableView.setGeometry(QtCore.QRect(0, 0, 1298, 885))
+        self.tableView.setGeometry(QtCore.QRect(0, 0, 1498, 885))
         self.tableView.setObjectName("tableView")
         self.tableView.setSelectionBehavior(QtWidgets.QTableView.SelectRows)
 

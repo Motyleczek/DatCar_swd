@@ -566,7 +566,7 @@ class Ui_DatCar(object):
         elif rms:
             self.cars = self.rms_results
         elif rate:
-            self.cars = self.rated_car
+            self.cars = self.rated_cars
         else:
             self.cars = self.database
 
@@ -793,7 +793,8 @@ class Ui_DatCar(object):
 
 
     def rate_car(self):
-        self.rated_car = ML_predict(self.selected_cars)
+        rating_df = self.database.iloc[self.selected_cars]
+        self.rated_cars = ML_predict(rating_df)
         self.show_cars_fulfilling_criteria(rate=True)
 
         

@@ -21,7 +21,7 @@ def ML_predict(data: pd.DataFrame) -> pd.DataFrame:
     if df.isna().sum().sum() > 0: # tu po prostu rzucam error, można to jakoś rozbudować
         raise ValueError("W danych występują brakujące wartości")
     print(df)
-    df["Age"] = 2022 - df['Rok produkcji']
+    df["Age"] = 2022 - df["Rok produkcji"]
     temp = df.copy()
     table = temp.groupby(['Marka'])['Cena'].mean()
     temp = temp.merge(table.reset_index(), how='left', on='Marka')
