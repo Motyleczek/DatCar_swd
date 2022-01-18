@@ -1,5 +1,8 @@
 import pandas as pd
 import numpy as np
+import sys
+import os.path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 from kryteria import Ui_Criteria
 from data_choose import Ui_Choose
 from data_choose import pandasModel as pandasChooseModel
@@ -16,9 +19,11 @@ class Ui_DatCar(object):
         self.selected_dream_id = []
         self.selected_owned_id = []
         self.selected_id = []
-        self.selected_dream_cars = pd.DataFrame()
-        self.selected_owned_cars = pd.DataFrame()
-        self.selected_cars = pd.DataFrame()
+        self.selected_acceptable_id = [] 
+        self.selected_acceptable_cars = []
+        self.selected_dream_cars = []
+        self.selected_owned_cars = []
+        self.selected_cars = []
         self.criterias = {}
         DatCar.setObjectName("DatCar")
         DatCar.resize(1130, 806)
@@ -503,7 +508,7 @@ class Ui_DatCar(object):
         self.wybierz_samochody_btn_3.clicked.connect(self.choose_owned_cars)
         self.wybierz_samochody_btn_4.clicked.connect(self.choose_cars)
         self.wybierz_samochody_btn_5.clicked.connect(self.choose_criterias)
-        self.wybierz_samochody_btn_6.clicked.connect(self.choose_criterias)
+        self.wybierz_samochody_btn_6.clicked.connect(self.choose_acceptable_cars)
         self.pushButton.clicked.connect(self.recommend_topsis)
         self.pushButton_2.clicked.connect(self.recommend_rsm)
         self.pushButton_3.clicked.connect(self.rate_car)
@@ -544,7 +549,7 @@ class Ui_DatCar(object):
         self.label_28.setText(_translate("DatCar", "Wybierz wymarzony/e samochód/y, a następnie swój aktualny pojazd, aby aplikacja mogła znaleźć najlepsze rozwiązanie dla Ciebie!"))
         self.wybierz_samochody_btn_2.setText(_translate("DatCar", "Wybierz wymarzone samochody"))
         self.wybierz_samochody_btn_3.setText(_translate("DatCar", "Wybierz aktualny samochód"))
-        self.wybierz_samochody_btn_6.setText(_translate("DatCar", "Wybierz odpowiednie kryteria"))
+        self.wybierz_samochody_btn_6.setText(_translate("DatCar", "Wybierz akceptowane przez Ciebie samochody"))
         self.pushButton_2.setText(_translate("DatCar", "Przeprowadź rekomendację"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.dreamCar), _translate("DatCar", "Wymarzony samochód"))
         self.label_29.setText(_translate("DatCar", "Wybierz samochód a my sprawdzimy, czy jest on warty zakupu! "))
@@ -552,7 +557,7 @@ class Ui_DatCar(object):
         self.pushButton_3.setText(_translate("DatCar", "Oceń samochód"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), _translate("DatCar", "Ocena jakości samochodu"))
 
-    def show_cars_fulfilling_criteria(self, sorted=False, topsis=False, rms=False):
+    def show_cars_fulfilling_criteria(self, sorted=False, topsis=False, rms=False, rate=False):
         # dodatek do funkcji wyświetlania po sortowaniach
         if sorted:
             self.cars = self.sorted_database
@@ -560,6 +565,8 @@ class Ui_DatCar(object):
             self.cars = self.topsis_sorted
         elif rms:
             self.cars = self.rms_results
+        elif rate:
+            self.cars = self.rated_car
         else:
             self.cars = self.database
 
@@ -660,7 +667,6 @@ class Ui_DatCar(object):
         model = pandasChooseModel(self.database, self.selected_id)
         self.table_window.tableView.setModel(model)
         self.widget.show()
-        print(self.selected_id)
 
     def choose_dream_cars(self):
         self.widget = QtWidgets.QWidget()
@@ -678,6 +684,14 @@ class Ui_DatCar(object):
         self.table_window.tableView.setModel(model)
         self.widget.show()
 
+    def choose_acceptable_cars(self):
+        self.widget = QtWidgets.QWidget()
+        self.table_window = Ui_Choose(self.selected_acceptable_id, self.selected_acceptable_cars, self.database)
+        self.table_window.setupUi(self.widget)
+        model = pandasChooseModel(self.database, self.selected_acceptable_id)
+        self.table_window.tableView.setModel(model)
+        self.widget.show()
+
     def choose_criterias(self):
         self.criterias_widget = QtWidgets.QWidget()
         self.criterias_list = Ui_Criteria()
@@ -685,7 +699,7 @@ class Ui_DatCar(object):
         self.criterias_widget.show()
 
     def recommend_topsis(self):
-        #Done: wywołanie metody Michała - topsis
+        #Done
 
         # wszystko od naciśnięcia guzika dzieje się tutaj
         # wybrane ID są w self.selected_id
@@ -693,7 +707,7 @@ class Ui_DatCar(object):
 
         # lista wag, zgodnie z kolejnością: cena, przebieg, pojemność, rok produkcji
         # minimalizacja by default
-        print(self.selected_cars)
+        
         weights = [1, 1, 1, 1]
         keys = self.criterias.keys()
         if 'Cena' in keys:
@@ -711,7 +725,7 @@ class Ui_DatCar(object):
 
         lista_nazw = ["Cena", "Rok produkcji", "Przebieg", "Pojemność"]
         topsis_df = self.database[lista_nazw]
-        topsis_df = topsis_df.iloc[self.selected_id]
+        topsis_df = topsis_df.iloc[self.selected_cars]
 
         topsis_np = topsis_df.to_numpy()
 
@@ -749,35 +763,10 @@ class Ui_DatCar(object):
         self.show_cars_fulfilling_criteria(topsis=True)
 
     def recommend_rsm(self):
-        #TODO: potrzebuje dodatkowego guziczka od wyborów: na ten moment sobie poradze z defaultową wartością
-        idxs = []
-        if self.f_u_idx is None:
-            # jakiś default do testów
-            idxs = [10, 40, 50, 80, 99, 69, 12]
-        else:
-            idxs = self.f_u_idx[:]
-
-        # tutaj to nie potrzebne
-        # TODO: zupełnie sie pozbyć tego guzika od wyboru maks/min
-        # weights = [1, 1, 1, 1]
-        # keys = self.criterias.keys()
-        # if 'Cena' in keys:
-        #     if self.criterias['Cena'] == "MAXIMUM":
-        #         weights[0] = -1
-        # if 'Rok produkcji' in keys:
-        #     if self.criterias['Rok produkcji'] == "MAXIMUM":
-        #         weights[1] = -1
-        # if 'Pojemność' in keys:
-        #     if self.criterias['Pojemność'] == "MAXIMUM":
-        #         weights[2] = -1
-        # if 'Przebieg' in keys:
-        #     if self.criterias['Przebieg'] == "MAXIMUM":
-        #         weights[3] = -1
-
         # wyciągnięcie z datasetu
-        aspiration = self.database.iloc[self.selected_dream_id]
-        status_quo = self.database.iloc[self.selected_owned_id]
-        f_u_df = self.database.iloc[idxs]
+        aspiration = self.database.iloc[self.selected_dream_cars]
+        status_quo = self.database.iloc[self.selected_owned_cars]
+        f_u_df = self.database.iloc[self.selected_acceptable_cars]
 
         # przerobienie na tylko te kolumny które mnie interesują + zamiana na numpaja:
         list_columns = ["Przebieg", "Rok produkcji", "Pojemność", "Cena"]
@@ -804,9 +793,10 @@ class Ui_DatCar(object):
 
 
     def rate_car(self):
-        #TODO: wywołanie metody sprawdzającej czy warto kupić samochód
-        #self.selected_cars
-        pass
+        self.rated_car = ML_predict(self.selected_cars)
+        self.show_cars_fulfilling_criteria(rate=True)
+
+        
 
     sorted_database = None
     topsis_sorted = None

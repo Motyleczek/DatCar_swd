@@ -133,11 +133,11 @@ class Ui_Choose(object):
     def viewClicked(self, currentIndex):
         if currentIndex.row() not in self.chosen_indexes:
             self.chosen_indexes.append(currentIndex.row())
-            self.chosen_cars = self.chosen_cars.append(self._data.loc[self._data["ID"]== int(self.tableView.model().index(currentIndex.row(),0).data())])
+            self.chosen_cars.append(int(self.tableView.model().index(currentIndex.row(),0).data()) - 1)
             self.setColortoRow(self.tableView.model(), currentIndex)
             self.Form.setWindowTitle("Element został dodany!")
         else:
-            self.chosen_indexes.remove(self.tableView.model().index(currentIndex.row(),0).data())
+            self.chosen_indexes.remove(int(self.tableView.model().index(currentIndex.row(),0).data()) - 1)
             self.Form.setWindowTitle("Element został usunięty!")
             self.setColortoRow(self.tableView.model(), currentIndex)
         self.tableView.setModel(self.tableView.model())

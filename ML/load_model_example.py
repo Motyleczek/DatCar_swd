@@ -13,13 +13,14 @@ def ML_predict(data: pd.DataFrame) -> pd.DataFrame:
     :return predictions: zwraca ndarray z wynikami przewidywań cen dla wprowadzonych modeli samochodów
     """
     filename = 'ML_model.sav'
-    loaded_model = pickle.load(open(filename, 'rb'))
+    loaded_model = pickle.load(open("ML/" + filename, 'rb'))
 
     #PLIK cars.csv -> konstrukcja kolumny "Kategoria"
-    df = pd.read_csv("../../DatCar_swd/Data/cars.csv")
+    df = pd.read_csv("Data/cars.csv")
     df.dropna(inplace=True)
     if df.isna().sum().sum() > 0: # tu po prostu rzucam error, można to jakoś rozbudować
         raise ValueError("W danych występują brakujące wartości")
+    print(df)
     df["Age"] = 2022 - df['Rok produkcji']
     temp = df.copy()
     table = temp.groupby(['Marka'])['Cena'].mean()
